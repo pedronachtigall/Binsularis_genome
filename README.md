@@ -12,7 +12,7 @@ All datasets used in the present study are detailed in the Supplementary file of
 The datasets are available in the NCBI under the project number [PRJNA679826](https://www.ncbi.nlm.nih.gov/bioproject/PRJNA679826/).
 
 ## Genome assembly
-The genome assembly pipeline is described in this turorial: "[Tutorial to perform chromosome-level genome assembly using HiFi and HiC data](https://github.com/pedronachtigall/HI-genome-assembly-pipeline)".
+The genome assembly pipeline is described in this tutorial: "[Tutorial to perform chromosome-level genome assembly using HiFi and HiC data](https://github.com/pedronachtigall/HI-genome-assembly-pipeline)".
 
 ## Genome annotation
 ### Repeat annotation
