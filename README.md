@@ -18,3 +18,31 @@ The pipeline with commands and scripts used to perform the repeat annotation is 
 For this step, we used the primary genome assembly to perform the repeat annotation and the soft-masked primary genome assembly as the source for gene annotation.
 
 ### Gene annotation
+The gene annotation was performed using [GALBA](https://github.com/Gaius-Augustus/GALBA). We followed the commands decribed in the following tutorial: "[Gene-annotation-pipeline](https://github.com/pedronachtigall/Gene-annotation-pipeline)".
+
+For this step, we used the soft-maked primary assembly to perform the gene annotation using GALBA with the integration of RNA-seq data derived from several tissues to be used as transcript evidence.
+
+The mitochondrial genome was annotated using [MitoZ](https://github.com/linzhi2013/MitoZ).
+```
+MitoZ.py annotate --genetic_code auto --clade Chordata --outprefix mitogenome_annotation --thread_number 20 --fastafile Binsularis_mitogenome.fasta
+```
+
+### Toxin annotation
+We used [ToxCodAn-Genome](https://github.com/pedronachtigall/ToxCodAn-Genome) to annotate toxins.
+
+```
+ADD COMMANDS HERE
+```
+
+The toxin genes were manually reviewed and curated following the "[Checking annotations](https://github.com/pedronachtigall/ToxCodAn-Genome/tree/main/Guide#checking-annotations)" section of the ToxCodAn-Genome's guide to ensure a comprehensive toxin annotation.
+
+
+
+
+## Cite
+If you follow the pipeline and/or use any of the scripts in this repository, please cite:
+
+Nachtigall et al. (in prep)
+
+```
+```
