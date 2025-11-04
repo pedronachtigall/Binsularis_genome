@@ -156,7 +156,7 @@ smc++ estimate --cores 32 -o smc_out/ 1.25e-8 *.smc.gz
 We compared the toxin genes from *B. insularis* to the toxin anntoation from *B. jararaca* genome ([Almeida et al., 2021](https://doi.org/10.1073/pnas.2015159118); GCA_018340635.1).
 
 ### Orthology inference
-We used Orthofinder to infer orthology of toxin genes.
+We used [Orthofinder](https://github.com/davidemms/OrthoFinder) to infer orthology of toxin genes.
 ```
 orthofinder -f Bins_Bjar_toxins/
 ```
