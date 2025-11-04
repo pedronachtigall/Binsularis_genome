@@ -66,7 +66,10 @@ The toxin genes were manually reviewed and curated following the "[Checking anno
 
 Additionally, we compared our toxin-annotated sequences to the ToxProt database, which comprises a curated and reviewed set of toxin sequences, and to the expressed sequence tag (EST) of the venom gland of *B. insularis* (NCBI accessions from BM401391 to BM402067) using BLAST.
 ```
-ADD CODE
+makeblastdb -in toxprot.fasta -out blastDB/toxprot -dbtype prot
+makeblastdb -in Binsularis_EST.fasta -out blastDB/est -dbtype prot
+blastn -query Binsularis_toxins_pep.fasta -out blast_toxprot.out -db blastDB/toxprot -num_threads 20 -max_target_seqs 1 -outfmt 6
+blastn -query Binsularis_toxins_pep.fasta -out blast_est.out -db blastDB/est -num_threads 20 -max_target_seqs 1 -outfmt 6
 ```
 
 ## Estimate expression level
@@ -94,7 +97,7 @@ mkdir STAR_index
 STAR --runThreadN 6 --runMode genomeGenerate --genomeDir STAR_index --genomeFastaFiles Binsularis_primary_chromosomes.fasta
 STAR --genomeDir STAR_index/ \
 --runThreadN 6 \
---readFilesIn ${SAMPLE}.fq \
+--readFilesIn ${SAMPLE}.R1.trim.fq.gz ${SAMPLE}.R2.trim.fq.gz \
 --outFileNamePrefix ${SAMPLE}_mapped \
 --outSAMtype BAM SortedByCoordinate \
 --outSAMattributes Standard
@@ -123,10 +126,10 @@ The raw data is listed below:
 bwa index Binsularis_primary_chromosomes.fasta
 
 #map reads
-bwa mem Binsularis_primary_chromosomes.fasta ${SAMPLE}.reads.fq > aligned.sam
+bwa mem -t 16 -R "@RG\tID:$SAMPLE\tLB:Binsu\tPL:illumina\tPU:NovaSeq6000\tSM:$SAMPLE" Binsularis_primary_chromosomes.fasta ${SAMPLE}.R1.trim.fq.gz ${SAMPLE}.R2.trim.fq.gz | samtools view -Sq 30 - | samtools sort -@ 16 -O bam -T temp -o $SAMPLE.q30.bam -
 
 #remove PCR duplicates
-ADD CODE
+picard MarkDuplicates I=$SAMPLE.q30.bam O=$SAMPLE.q30.nodups.bam M=$SAMPLE.marked_dup_metrics.txt
 
 #variant call
 bcftools mpileup --threads 40 --annotate FORMAT/AD,FORMAT/ADF,FORMAT/ADR,FORMAT/DP,FORMAT/SP,INFO/AD,INFO/ADF,INFO/ADR -Ou -f Binsularis_primary_chromosomes.fasta *.q30.nodups.bam | bcftools call --threads 40 -mv -Ov -o Binsularis_all.variants.vcf
@@ -155,7 +158,7 @@ We compared the toxin genes from *B. insularis* to the toxin anntoation from *B.
 ### Orthology inference
 We used Orthofinder to infer orthology of toxin genes.
 ```
-ADD CODE
+orthofinder -f Bins_Bjar_toxins/
 ```
 
 ### Gene tree
