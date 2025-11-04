@@ -145,7 +145,7 @@ vcftools --vcf Binsularis_all.variants.filtered.cov.snp.vcf --singletons --out B
 ```
 
 ### Demographic inference
-We used [SMC++](https://github.com/popgenmethods/smcpp) to estimate effective population size. We retrieved the VCF for each autosome (i.e., we excluded the sex chromosome) to analyze them separately.
+We used [SMC++](https://github.com/popgenmethods/smcpp) to estimate effective population size. We retrieved the VCF for autosomes only (i.e., we excluded the sex chromosome).
 
 ```
 smc++ vcf2smc --cores 32 Binsularis_all.variants.filtered.cov.snp.${CHROM}.vcf.gz ${CHROM}.smc.gz ${CHROM}
