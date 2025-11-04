@@ -1,4 +1,4 @@
-# Bothrops insularis genome
+# *Bothrops insularis* genome
 <!--- [![Published in GBE](https://img.shields.io/badge/published%20in-GBE-blue)](https://doi.org/10.1093/molbev/msaf058) --->
 
 [![Data available in the Fisghare](https://img.shields.io/badge/data%20available%20in%20the-figshare-red)](https://figshare.com/projects/Bothrops_insularis_genome/237995)
@@ -90,11 +90,21 @@ The raw data is listed below:
 | SB1852_VG_rna  | RNA-seq | SRR32358144 |
 
 ```
-ADD CODE
+mkdir STAR_index
+STAR --runThreadN 6 --runMode genomeGenerate --genomeDir STAR_index --genomeFastaFiles Binsularis_primary_chromosomes.fasta
+STAR --genomeDir STAR_index/ \
+--runThreadN 6 \
+--readFilesIn ${SAMPLE}.fq \
+--outFileNamePrefix ${SAMPLE}_mapped \
+--outSAMtype BAM SortedByCoordinate \
+--outSAMattributes Standard
+featureCounts -T 20 -t CDS -g gene_id -a toxin_annotation.gtf -o SAMPLE_counts.txt *_mapped.bam
 ```
 
 ## Analysis of genetic variation in toxin genes
 We used whole genome sequencing data from eight specimens of *B. insularis* to check for the genetic variation of toxin genes.
+
+We used the following tools: bwa to map reads; picard to remove PCR duplicates; BCFtools and VCFtools to handle variant calling, filtering and downstream analysis.
 
 The raw data is listed below:
 | Sample ID | Data type | NCBI accession |
@@ -109,13 +119,34 @@ The raw data is listed below:
 | SB1858    | WGS       | SRR32361263    |
 
 ```
+#index genome
+bwa index Binsularis_primary_chromosomes.fasta
+
+#map reads
+bwa mem Binsularis_primary_chromosomes.fasta ${SAMPLE}.reads.fq > aligned.sam
+
+#remove PCR duplicates
 ADD CODE
+
+#variant call
+bcftools mpileup --threads 40 --annotate FORMAT/AD,FORMAT/ADF,FORMAT/ADR,FORMAT/DP,FORMAT/SP,INFO/AD,INFO/ADF,INFO/ADR -Ou -f Binsularis_primary_chromosomes.fasta *.q30.nodups.bam | bcftools call --threads 40 -mv -Ov -o Binsularis_all.variants.vcf
+
+#filter SNPs
+bcftools filter --threads 20 -i 'QUAL > 20 && INFO/DP>7 && INFO/DP<160' Binsularis_all.variants.vcf > Binsularis_all.variants.filtered.cov.vcf
+bcftools view -i 'TYPE!="INDEL"' Binsularis_all.variants.filtered.cov.vcf > Binsularis_all.variants.filtered.cov.snp.vcf
+
+#quality check
+vcftools --vcf Binsularis_all.variants.filtered.cov.snp.vcf --depth --out Binsularis_all.variants.filtered.cov.snp.CHECK
+vcftools --vcf Binsularis_all.variants.filtered.cov.snp.vcf --site-mean-depth --out Binsularis_all.variants.filtered.cov.snp.CHECK
+vcftools --vcf Binsularis_all.variants.filtered.cov.snp.vcf --singletons --out Binsularis_all.variants.filtered.cov.snp.CHECK
 ```
 
 ### Demographic inference
-We used [SMC++](https://github.com/popgenmethods/smcpp) to estimate effective population size.
+We used [SMC++](https://github.com/popgenmethods/smcpp) to estimate effective population size. We retrieved the VCF for each autosome (i.e., we excluded the sex chromosome) to analyze them separately.
+
 ```
-ADD CODE
+smc++ vcf2smc --cores 32 Binsularis_all.variants.filtered.cov.snp.${CHROM}.vcf.gz ${CHROM}.smc.gz ${CHROM}
+smc++ estimate --cores 32 -o smc_out/ 1.25e-8 *.smc.gz
 ```
 
 ## Comparison to *Bothrops jararaca*
