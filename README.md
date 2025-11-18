@@ -1,3 +1,11 @@
+<div align="center">
+<center>
+
+![Binsularis](/Binsularis_picture.png)
+
+</center>
+</div>
+
 # *Bothrops insularis* genome
 <!--- [![Published in GBE](https://img.shields.io/badge/published%20in-GBE-blue)](https://doi.org/10.1093/molbev/msaf058) --->
 
