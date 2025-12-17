@@ -7,15 +7,12 @@
 </div>
 
 # *Bothrops insularis* genome
-<!--- [![Published in GBE](https://img.shields.io/badge/published%20in-GBE-blue)](https://doi.org/10.1093/molbev/msaf058) --->
-
+[![Published in GBE](https://img.shields.io/badge/published%20in-GBE-blue)](https://doi.org/10.1093/gbe/evaf243)
 [![Data available in the Fisghare](https://img.shields.io/badge/data%20available%20in%20the-figshare-red)](https://figshare.com/projects/Bothrops_insularis_genome/237995)
 
-<!---
 This repository contains commands and scripts used in the manuscript "The golden lancehead genome reveals distinct selective processes acting on venom genes of an island endemic snake" published in *Genome Biology and Evolution*.
 
 All datasets used in the present study are detailed in the Supplementary file of the published manuscript.
---->
 
 The datasets are available in the NCBI under the project number [PRJNA679826](https://www.ncbi.nlm.nih.gov/bioproject/PRJNA679826/).
 
@@ -184,7 +181,19 @@ We compared the *B. insularis* chromosome genome assembly with other viper speci
 ## Cite
 If you follow the pipeline and/or use any of the scripts in this repository, please cite:
 
-Nachtigall et al. (in prep)
+Nachtigall et al. (2025) The golden lancehead genome reveals distinct selective processes acting on venom genes of an island endemic snake. Genome Biology and Evolution, evaf243. [https://doi.org/10.1093/gbe/evaf243](https://doi.org/10.1093/gbe/evaf243)
 
 ```
+@article{Nachtigall:2025:Binsularis,
+    author = {Nachtigall, Pedro G and Mason, Andrew J and Rokyta, Darin R and Gibbs, H Lisle and Grazziotin, Felipe G and Junqueira-de-Azevedo, Inácio L M},
+    title = {The golden lancehead genome reveals distinct selective processes acting on venom genes of an island endemic snake},
+    journal = {Genome Biology and Evolution},
+    pages = {evaf243},
+    year = {2025},
+    month = {12},
+    issn = {1759-6653},
+    doi = {10.1093/gbe/evaf243},
+    url = {https://doi.org/10.1093/gbe/evaf243},
+    eprint = {https://academic.oup.com/gbe/advance-article-pdf/doi/10.1093/gbe/evaf243/65873733/evaf243.pdf},
+}
 ```
